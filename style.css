@@ -45,6 +45,8 @@ h1 {
 h1 span {
   color: #fff;
   text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  border-bottom: 2px solid #009C3B;
+  padding-bottom: 1px;
 }
 
 .toolbar {
@@ -274,6 +276,31 @@ h1 span {
 .card.face-up.red   .fighter-name.king-name { color: #8b0000; }
 .card.face-up.black .fighter-name.king-name { color: #000;    }
 
+/* === EMPTY STOCK — Brazilian flag ring === */
+/* When the stock runs out show a tri-color ring (green / yellow / blue) */
+#stock:has(.pile-hint) {
+  border: 3px solid transparent;
+  /* conic-gradient approximates the flag band proportions */
+  background-image:
+    conic-gradient(
+      #009C3B  0deg  120deg,
+      #FFDF00 120deg  240deg,
+      #002776 240deg  360deg
+    );
+  background-origin: border-box;
+  background-clip: border-box;
+  /* white inner face so the card slot looks clean */
+  box-shadow: inset 0 0 0 3px #111;
+}
+
+/* === FOUNDATION PILES — Brazil green glow === */
+.pile[id^="foundation-"] {
+  box-shadow: 0 0 0 1px rgba(0,156,59,0.35), 0 0 8px rgba(0,156,59,0.15);
+}
+.pile[id^="foundation-"].drop-target {
+  box-shadow: 0 0 12px rgba(255,215,0,0.35), 0 0 0 1px rgba(0,156,59,0.6);
+}
+
 /* === WIN OVERLAY === */
 #win-overlay {
   position: fixed;
@@ -336,6 +363,26 @@ h1 span {
   margin-bottom: 28px;
 }
 .win-sub strong { color: #FFD700; }
+
+/* === CONFETTI PARTICLES === */
+.confetti-piece {
+  position: fixed;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 300;
+  transform-origin: center center;
+  animation: confettiBurst 1.4s ease-out forwards;
+}
+
+@keyframes confettiBurst {
+  0%   { transform: translate(-50%, -50%) scale(1) rotate(0deg);    opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0.4) rotate(var(--rot)); opacity: 0; }
+}
 
 /* === RESPONSIVE === */
 @media (max-width: 580px) {

@@ -373,14 +373,40 @@ function render() {
   if (mc) mc.textContent = state.moves;
 }
 
+function spawnConfetti() {
+  const COLORS = ['#FFD700', '#ffffff', '#009C3B', '#e63030', '#FFDF00', '#002776'];
+  const count = 32;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.background = COLORS[i % COLORS.length];
+    // Random outward direction with varied distance
+    const angle = (i / count) * 360 + (Math.random() * 20 - 10);
+    const dist  = 140 + Math.random() * 220;
+    const rad   = angle * Math.PI / 180;
+    p.style.setProperty('--tx', `calc(-50% + ${Math.cos(rad) * dist}px)`);
+    p.style.setProperty('--ty', `calc(-50% + ${Math.sin(rad) * dist}px)`);
+    p.style.setProperty('--rot', `${Math.random() * 540 - 270}deg`);
+    p.style.animationDelay = `${Math.random() * 0.25}s`;
+    document.body.appendChild(p);
+    p.addEventListener('animationend', () => p.remove(), { once: true });
+  }
+}
+
+function clearConfetti() {
+  document.querySelectorAll('.confetti-piece').forEach(p => p.remove());
+}
+
 function showWinScreen() {
   const overlay = document.getElementById('win-overlay');
   overlay.classList.remove('hidden');
   document.getElementById('final-moves').textContent = state.moves;
+  spawnConfetti();
 }
 
 function hideWinScreen() {
   document.getElementById('win-overlay').classList.add('hidden');
+  clearConfetti();
 }
 
 // === INTERACTION ===
