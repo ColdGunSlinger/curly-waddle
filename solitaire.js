@@ -17,26 +17,26 @@ const SUIT_COLORS = {
   clubs:    'black'
 };
 
-// Poatan-themed face card labels
+// Fighters on each face card — opponents Pereira has defeated
+const KING_NAMES = {
+  spades:   'JIŘÍ',        // Prochazka — UFC 303
+  hearts:   'HILL',        // Jamahal Hill — UFC 300
+  diamonds: 'ROUNTREE',    // Khalil Rountree — UFC 307
+  clubs:    'STRICKLAND'   // Sean Strickland — UFC 276
+};
+
+const QUEEN_NAMES = {
+  spades:   'PROCHÁZKA',   // Prochazka — UFC 295
+  hearts:   'ADESANYA',    // Israel Adesanya — UFC 281
+  diamonds: 'BLACHOWICZ',  // Jan Blachowicz — UFC 291
+  clubs:    'ANKALAEV'     // Magomed Ankalaev
+};
+
 const JACK_NAMES = {
-  spades:   'ADESANYA',
-  hearts:   'HILL',
-  diamonds: 'JIŘÍ',
-  clubs:    'ROUNTREE'
-};
-
-const QUEEN_MOVES = {
-  spades:   'LEFT HOOK',
-  hearts:   'HEAD KICK',
-  diamonds: 'BODY KICK',
-  clubs:    'UPPERCUT'
-};
-
-const KING_FIGHTS = {
-  spades:   'UFC 281',
-  hearts:   'UFC 287',
-  diamonds: 'UFC 300',
-  clubs:    'UFC 303'
+  spades:   'SANTOS',      // Thiago Santos
+  hearts:   'MICHAILIDIS', // Andreas Michailidis
+  diamonds: 'SILVA',       // Bruno Silva
+  clubs:    'MARQUES'      // Danilo Marques
 };
 
 function rankLabel(rank) {
@@ -241,23 +241,22 @@ function createCardEl(card) {
   let center = '';
 
   if (card.rank === 13) {
-    // King — POATAN champion card
-    const fight = KING_FIGHTS[card.suit];
+    // King — fighter Pereira defeated for a title
+    const name = KING_NAMES[card.suit];
     center = `<div class="face-card">
-      <span class="king-name">POATAN</span>
-      <span class="king-fight">${fight}</span>
+      <span class="fighter-name king-name">${name}</span>
     </div>`;
   } else if (card.rank === 12) {
-    // Queen — finishing move
-    const move = QUEEN_MOVES[card.suit];
+    // Queen — fighter Pereira defeated in a main event
+    const name = QUEEN_NAMES[card.suit];
     center = `<div class="face-card">
-      <span class="queen-move">${move}</span>
+      <span class="fighter-name">${name}</span>
     </div>`;
   } else if (card.rank === 11) {
-    // Jack — opponent
+    // Jack — opponent Pereira finished
     const name = JACK_NAMES[card.suit];
     center = `<div class="face-card">
-      <span class="jack-name">${name}</span>
+      <span class="fighter-name">${name}</span>
     </div>`;
   } else if (card.rank === 1) {
     // Ace — Poatan ace
