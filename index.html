@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POATAN SOLITAIRE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>POATAN <span>SOLITAIRE</span></h1>
+    <div class="toolbar">
+      <button id="new-game-btn" class="btn-action">NEW FIGHT</button>
+      <label class="draw-toggle-label">
+        <input type="checkbox" id="draw-toggle"> DRAW 3
+      </label>
+      <div class="move-counter">STRIKES: <strong><span id="move-count">0</span></strong></div>
+    </div>
+  </header>
+
+  <div id="game">
+    <div id="top-area">
+      <div class="pile" id="stock" data-pile-id="stock"></div>
+      <div class="pile" id="waste" data-pile-id="waste"></div>
+      <div class="top-spacer"></div>
+      <div class="pile" id="foundation-0" data-pile-id="foundation-0"></div>
+      <div class="pile" id="foundation-1" data-pile-id="foundation-1"></div>
+      <div class="pile" id="foundation-2" data-pile-id="foundation-2"></div>
+      <div class="pile" id="foundation-3" data-pile-id="foundation-3"></div>
+    </div>
+    <div id="tableau-area">
+      <div class="pile" id="tableau-0" data-pile-id="tableau-0"></div>
+      <div class="pile" id="tableau-1" data-pile-id="tableau-1"></div>
+      <div class="pile" id="tableau-2" data-pile-id="tableau-2"></div>
+      <div class="pile" id="tableau-3" data-pile-id="tableau-3"></div>
+      <div class="pile" id="tableau-4" data-pile-id="tableau-4"></div>
+      <div class="pile" id="tableau-5" data-pile-id="tableau-5"></div>
+      <div class="pile" id="tableau-6" data-pile-id="tableau-6"></div>
+    </div>
+  </div>
+
+  <div id="win-overlay" class="hidden">
+    <div class="win-box">
+      <div class="win-belt">🏆</div>
+      <h2>POATAN<br>WINS BY KO!</h2>
+      <p class="win-sub">Finished in <strong><span id="final-moves">0</span> STRIKES</strong></p>
+      <button id="play-again-btn" class="btn-action">FIGHT AGAIN</button>
+    </div>
+  </div>
+
+  <script src="solitaire.js"></script>
+</body>
+</html>

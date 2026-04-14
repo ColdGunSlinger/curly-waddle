@@ -1,0 +1,370 @@
+/* === RESET === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* === BASE === */
+body {
+  background-color: #111;
+  background-image:
+    linear-gradient(rgba(255,215,0,0.04) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255,215,0,0.04) 2px, transparent 2px),
+    linear-gradient(rgba(255,215,0,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,215,0,0.012) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
+  color: #FFD700;
+  font-family: Impact, 'Arial Black', Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* === HEADER === */
+header {
+  background: linear-gradient(to bottom, #000, #141414);
+  border-bottom: 2px solid #FFD700;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 24px rgba(255,215,0,0.18);
+}
+
+h1 {
+  font-size: 1.55rem;
+  letter-spacing: 5px;
+  color: #FFD700;
+  text-shadow: 0 0 18px rgba(255,215,0,0.55), 0 2px 4px rgba(0,0,0,0.9);
+  line-height: 1;
+}
+
+h1 span {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* === BUTTONS === */
+.btn-action {
+  background: linear-gradient(135deg, #FFD700, #e6a800);
+  color: #000;
+  border: none;
+  padding: 7px 18px;
+  font-family: Impact, sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: filter 0.15s, transform 0.1s;
+}
+.btn-action:hover  { filter: brightness(1.18); transform: scale(1.04); }
+.btn-action:active { transform: scale(0.97); }
+
+/* === DRAW TOGGLE === */
+.draw-toggle-label {
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.draw-toggle-label:hover { color: #FFD700; }
+.draw-toggle-label input[type="checkbox"] {
+  width: 14px; height: 14px;
+  accent-color: #FFD700;
+  cursor: pointer;
+}
+
+/* === MOVE COUNTER === */
+.move-counter {
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  color: #777;
+}
+.move-counter strong { color: #FFD700; }
+
+/* === GAME LAYOUT === */
+#game {
+  padding: 16px;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+#top-area {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+  align-items: start;
+}
+
+.top-spacer { /* gap column */ }
+
+#tableau-area {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+/* === PILE SLOTS === */
+.pile {
+  border: 2px dashed rgba(255,215,0,0.2);
+  border-radius: 8px;
+  min-height: 104px;
+  position: relative;
+  cursor: pointer;
+  overflow: visible;
+  transition: border-color 0.1s, background 0.1s, box-shadow 0.1s;
+}
+
+.pile.drop-target {
+  border: 2px solid #FFD700;
+  background: rgba(255,215,0,0.07);
+  box-shadow: 0 0 12px rgba(255,215,0,0.35);
+}
+
+.pile-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  color: rgba(255,215,0,0.2);
+  pointer-events: none;
+}
+
+/* === CARDS === */
+.card {
+  width: 100%;
+  height: 104px;
+  border-radius: 7px;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: #fff;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.55);
+  position: relative;
+  font-family: Georgia, 'Times New Roman', serif;
+  overflow: hidden;
+  transition: box-shadow 0.1s;
+}
+
+.card.face-up   { cursor: grab; }
+.card.face-down { cursor: default; }
+.card:active    { cursor: grabbing; }
+
+.card.dragging {
+  opacity: 0.35;
+  box-shadow: none;
+}
+
+/* Face-up text colors */
+.card.face-up.red   { color: #c00; }
+.card.face-up.black { color: #111; }
+
+/* === CARD BACK === */
+.card.face-down {
+  background: #0c0c0c;
+  border: 2px solid rgba(255,215,0,0.45);
+}
+
+.card-back-inner {
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255,215,0,0.22);
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255,215,0,0.06) 0px,
+    rgba(255,215,0,0.06) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-back-inner::after {
+  content: 'POATAN';
+  font-family: Impact, sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 3px;
+  color: rgba(255,215,0,0.32);
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
+
+/* === CARD CORNERS === */
+.card-corner {
+  position: absolute;
+  font-size: 0.67rem;
+  font-weight: bold;
+  line-height: 1.15;
+  text-align: center;
+  font-family: Georgia, serif;
+}
+.card-corner.tl { top: 3px; left: 4px; }
+.card-corner.br { bottom: 3px; right: 4px; transform: rotate(180deg); }
+
+/* === CARD CENTER CONTENT === */
+.pip-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.55rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Ace */
+.ace-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  line-height: 1.25;
+  pointer-events: none;
+}
+.ace-suit   { font-size: 1.5rem; display: block; }
+.ace-label  {
+  display: block;
+  font-family: Impact, sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 2px;
+}
+
+/* Face cards shared */
+.face-card {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 86%;
+  pointer-events: none;
+}
+
+/* Jack — opponent names */
+.jack-name {
+  display: block;
+  font-family: Impact, sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+}
+
+/* Queen — finishing moves */
+.queen-move {
+  display: block;
+  font-family: Impact, sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+
+/* King — POATAN + fight */
+.king-name {
+  display: block;
+  font-family: Impact, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 2.5px;
+}
+.card.face-up.red   .king-name { color: #8b0000; }
+.card.face-up.black .king-name { color: #000;    }
+
+.king-fight {
+  display: block;
+  font-family: Impact, sans-serif;
+  font-size: 0.54rem;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  margin-top: 1px;
+}
+
+/* === WIN OVERLAY === */
+#win-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.35s ease;
+}
+#win-overlay.hidden { display: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.win-box {
+  background: linear-gradient(160deg, #111 0%, #1c1a00 60%, #111 100%);
+  border: 3px solid #FFD700;
+  border-radius: 14px;
+  padding: 44px 64px;
+  text-align: center;
+  box-shadow:
+    0 0 60px rgba(255,215,0,0.32),
+    inset 0 0 30px rgba(255,215,0,0.04);
+  animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.65); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.win-belt {
+  font-size: 3rem;
+  margin-bottom: 8px;
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes pulse {
+  from { filter: drop-shadow(0 0 6px rgba(255,215,0,0.4)); }
+  to   { filter: drop-shadow(0 0 20px rgba(255,215,0,0.9)); }
+}
+
+.win-box h2 {
+  font-size: 2.3rem;
+  letter-spacing: 3px;
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.65), 0 2px 4px rgba(0,0,0,0.9);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.win-sub {
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  color: #aaa;
+  letter-spacing: 2px;
+  margin-bottom: 28px;
+}
+.win-sub strong { color: #FFD700; }
+
+/* === RESPONSIVE === */
+@media (max-width: 580px) {
+  #game { padding: 8px; }
+  #top-area, #tableau-area { gap: 4px; }
+  h1 { font-size: 1.1rem; letter-spacing: 3px; }
+  .move-counter { display: none; }
+  .card-corner { font-size: 0.56rem; }
+  .card-back-inner::after { display: none; }
+  .win-box { padding: 28px 26px; }
+  .win-box h2 { font-size: 1.6rem; }
+}
